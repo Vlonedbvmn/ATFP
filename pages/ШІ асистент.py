@@ -1455,9 +1455,9 @@ if __name__ == "__main__":
         except:
             st.session_state.date_not_n = True
             ds_for_pred['ds'] = [i for i in range(1, len(ds_for_pred) + 1)]
-        st.title("ШІ асистент")
+        st.title("ШІ помічник")
         st.write(" ")
-        st.markdown("## Приклади промптів:")
+        st.markdown("## Приклади запитів до ШІ помічника:")
         for message in st.session_state.messages1:
             with st.chat_message(message["role"]):
                 # if isinstance(message["content"],str):
