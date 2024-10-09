@@ -1504,7 +1504,7 @@ if __name__ == "__main__":
             # Display assistant response in chat message container
             with st.chat_message("assistant"):
                 response_generator(ds_for_pred, prompt)
-                if st.session_state.tusk == "fcst"
+                if st.session_state.tusk == "fcst":
                     rep = "Дякую за Ваш запит, ось резульати прогнозування"
                     st.write_stream(response1(rep))
                     st.session_state.messages.append({"role": "assistant", "content": rep})
