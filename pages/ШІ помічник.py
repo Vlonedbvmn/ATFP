@@ -41,6 +41,10 @@ if "fig_b" not in st.session_state:
     st.session_state.fig_b = None
 if "dataai" not in st.session_state:
     st.session_state.dataai = None
+if "m1" not in st.session_state:
+    st.session_state.m1 = None
+if "m2" not in st.session_state:
+    st.session_state.m2 = None
 
 def response_1(chr):
     response = chr
@@ -76,7 +80,7 @@ def response_generator(datafra, res):
         model="llama-3.1-70b-versatile"
     )
     respo = chatco.choices[0].message.content
-    response = "Уточніть будь ласка запит"
+    response = "Уточніть, будь ласка, Ваш запит"
     try:
         mdl = respo.split()[1]
         hrz = respo.split()[3]
@@ -86,16 +90,9 @@ def response_generator(datafra, res):
         q = int(round(len(datafra) * 0.01, 0))
 
         if tsk == "Forecasting":
-            chatco = client.chat.completions.create(
-                messages=[
-                    {
-                        "role": "user",
-                        "content": f"Вічливо переформулюй фразу: 'Добре, ось результати пронозування зроблені за Вашим запитом.'"
-                    }
-                ],
-                model="llama-3.1-70b-versatile"
-            )
-            response = chatco.choices[0].message.content
+            st.session_state.m1 = "Ось табличка з данми Вашого прогнозу"
+            st.session_state.m2 = "Та також графік Вашого прогнозу. Синім зображені дані до, а червоним зображено сам прогноз"
+            response = "Дякую за Ваш запит, ось результати прогнозування"
             if mdl == "KAN":
                 if hrz == "None":
                     response = "Уточніть на скільки вперед робити прогноз"
@@ -1361,16 +1358,9 @@ def response_generator(datafra, res):
                         st.session_state.fig_b = chr
                         st.session_state.dataai = pred2.rename.rename(columns={"NBEATSx": st.session_state.target}).drop(["unique_id"], axis=1)
         elif tsk == "Anomaly":
-            chatco = client.chat.completions.create(
-                messages=[
-                    {
-                        "role": "user",
-                        "content": f"Вічливо переформулюй фразу: 'Добре, ось результати проведння тесту на аномалії зроблені за Вашим запитом.'"
-                    }
-                ],
-                model="llama-3.1-70b-versatile"
-            )
-            response = chatco.choices[0].message.content
+            st.session_state.m1 = "Ось табличка з даними після проведення тестування на аномалії"
+            st.session_state.m2 = "Та також графік Вашого прогнозу. Синім зображені Ваші дані, зеленим - прогнозовані а червоним крапками місця з аномаліями"
+            response = "Дякую за Ваш запит, ось резульати проведення тестування на аномалії"
             model = NeuralForecast(
                 models=[
                     NBEATSx(h=len(datafra),
@@ -1424,16 +1414,7 @@ def response_generator(datafra, res):
             st.session_state.fig_b = fig
             st.session_state.dataai = datafra.drop(['unique_id', 'residuals'], axis=1)
         elif tsk == "None":
-            chatco = client.chat.completions.create(
-                messages=[
-                    {
-                        "role": "user",
-                        "content": f"Вічливо переформулюй фразу: 'Уточніть завдання.'"
-                    }
-                ],
-                model="llama-3.1-70b-versatile"
-            )
-            response = chatco.choices[0].message.content
+            response = "Вибачте, але здається що Ви не вказали, що конкретно хочете робити"
 
     except: pass
     for word in response.split():
@@ -1505,11 +1486,15 @@ if __name__ == "__main__":
                 response = st.write_stream(gen)
                 st.session_state.messages.append({"role": "assistant", "content": response})
                 if st.session_state.dataai is not None:
+                    r1 = st.write_stream(response_1(st.session_state.m1))
                     dai = st.write(st.session_state.dataai)
+                    r2 = st.write_stream(response_1(st.session_state.m2))
                     chart = st.plotly_chart(st.session_state.fig_b, use_container_width=True)
                     print(dai)
                     print("-"*1000)
+                    st.session_state.messages.append({"role": "assistant", "content": r1})
                     st.session_state.messages.append({"role": "assistant", "content": st.session_state.dataai})
+                    st.session_state.messages.append({"role": "assistant", "content": r2})
                     st.session_state.messages.append({"role": "assistant", "content": st.session_state.fig_b})
 
 
