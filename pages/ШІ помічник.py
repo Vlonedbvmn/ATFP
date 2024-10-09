@@ -1454,8 +1454,8 @@ st.set_page_config(
 
 if __name__ == "__main__":
     if st.session_state.df is not None:
-        if st.session_state.no_d:
-            pass
+        with st.chat_message("assistant"):
+            st.write_stream(response_1(f"Зараз працюю з обраним Вами набором даних: {'st.session_state.name'}"))
         st.session_state.no_d = None 
         print(st.session_state.fig_b)
         print(st.session_state.dataai)
