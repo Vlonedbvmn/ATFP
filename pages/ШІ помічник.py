@@ -30,6 +30,9 @@ if "messages1" not in st.session_state:
                                   {"role": "user", "content": "Здійсни тестування датасету на аномалії"},
                                   {"role": "user", "content": "Здійсни прогнозування на 2 тижні за допомогою моделі TimeMixer"}]
 
+if "no_d" not in st.session_state:
+    st.session_state.no_d = None 
+
 
 if "messages" not in st.session_state:
     st.session_state.messages = []
@@ -38,6 +41,10 @@ if "fig_b" not in st.session_state:
     st.session_state.fig_b = None
 if "dataai" not in st.session_state:
     st.session_state.dataai = None
+
+def response_1():
+    response = "Перед тим як працювати зі мною, оберіть дані з якими Ви будете працювати у розділі 'Дані'"
+
 
 # Streamed response emulator
 def response_generator(datafra, res):
@@ -1445,6 +1452,9 @@ st.set_page_config(
 
 if __name__ == "__main__":
     if st.session_state.df is not None:
+        if st.session_state.no_d:
+            pass
+        st.session_state.no_d = None 
         print(st.session_state.fig_b)
         print(st.session_state.dataai)
         ds_for_pred = pd.DataFrame()
@@ -1503,4 +1513,7 @@ if __name__ == "__main__":
 
 
     else:
-        st.warning('Для проведення тесту на аномалії, оберіть дані', icon="⚠️")
+        st.sessison_state.no_d = True
+         
+        with st.chat_message("assistant"):
+            st.write_stream("Перед тим як працювати зі мною, оберіть дані з якими Ви будете працювати у розділі 'Дані'")
