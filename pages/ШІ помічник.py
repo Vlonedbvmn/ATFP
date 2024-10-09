@@ -1513,7 +1513,7 @@ if __name__ == "__main__":
 
 
     else:
-        st.sessison_state.no_d = True
+        st.session_state.no_d = True
          
         with st.chat_message("assistant"):
             st.write_stream("Перед тим як працювати зі мною, оберіть дані з якими Ви будете працювати у розділі 'Дані'")
