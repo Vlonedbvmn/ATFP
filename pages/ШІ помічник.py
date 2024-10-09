@@ -1454,8 +1454,6 @@ st.set_page_config(
 
 if __name__ == "__main__":
     if st.session_state.df is not None:
-        with st.chat_message("assistant"):
-            st.write_stream(response_1(f"Зараз працюю з обраним Вами набором даних: {st.session_state.name}"))
         st.session_state.no_d = None 
         print(st.session_state.fig_b)
         print(st.session_state.dataai)
@@ -1489,6 +1487,8 @@ if __name__ == "__main__":
                 #     st.plotly_chart(message["content"])
                 # else:
                 st.write(message["content"])
+        with st.chat_message("assistant"):
+            st.write_stream(response_1(f"Зараз працюю з обраним Вами набором даних: {st.session_state.name}"))
         # Accept user input
         if prompt := st.chat_input("Напишіть свій запит і отримайте відповідь"):
             # Add user message to chat history
