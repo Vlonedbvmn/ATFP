@@ -33,9 +33,7 @@ if "messages1" not in st.session_state:
 if "no_d" not in st.session_state:
     st.session_state.no_d = None 
 
-if "tusk" not in st.session_state:
-    st.session_state.tusk = None 
-         
+
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
@@ -44,8 +42,8 @@ if "fig_b" not in st.session_state:
 if "dataai" not in st.session_state:
     st.session_state.dataai = None
 
-def response_1(ch):
-    response = ch
+def response_1():
+    response = "Перед тим як працювати зі мною, оберіть дані з якими Ви будете працювати у розділі 'Дані'"
     for word in response.split():
                 yield word + " "
                 time.sleep(0.1)
@@ -88,7 +86,6 @@ def response_generator(datafra, res):
         q = int(round(len(datafra) * 0.01, 0))
 
         if tsk == "Forecasting":
-            st.session_state.tusk = "Fcst"
             chatco = client.chat.completions.create(
                 messages=[
                     {
@@ -1364,7 +1361,6 @@ def response_generator(datafra, res):
                         st.session_state.fig_b = chr
                         st.session_state.dataai = pred2.rename.rename(columns={"NBEATSx": st.session_state.target}).drop(["unique_id"], axis=1)
         elif tsk == "Anomaly":
-            st.session_state.tusk = "anml"
             chatco = client.chat.completions.create(
                 messages=[
                     {
@@ -1428,7 +1424,6 @@ def response_generator(datafra, res):
             st.session_state.fig_b = fig
             st.session_state.dataai = datafra.drop(['unique_id', 'residuals'], axis=1)
         elif tsk == "None":
-            st.session_state.tusk = "nn"
             chatco = client.chat.completions.create(
                 messages=[
                     {
@@ -1440,7 +1435,10 @@ def response_generator(datafra, res):
             )
             response = chatco.choices[0].message.content
 
-    except: st.session_state.tusk == "no"
+    except: pass
+    for word in response.split():
+                yield word + " "
+                time.sleep(0.1)
 
 
 
@@ -1503,51 +1501,16 @@ if __name__ == "__main__":
 
             # Display assistant response in chat message container
             with st.chat_message("assistant"):
-                response_generator(ds_for_pred, prompt)
-                if st.session_state.tusk == "fcst":
-                    rep = "Дякую за Ваш запит, ось резульати прогнозування"
-                    st.write_stream(response_1(rep))
-                    st.session_state.messages.append({"role": "assistant", "content": rep})
-                    if st.session_state.dataai is not None:
-                        rep2 = "Ось табличка з данми Вашого прогнозу"
-                        rep3 = "Та також графік Вашого прогнозу. Синім зображені дані до, а червоним зображено сам прогноз"
-                        st.write_stream(response_1(rep2))
-                        dai = st.write(st.session_state.dataai)
-                        
-                        st.write_stream(response_1(rep3))
-                        chart = st.plotly_chart(st.session_state.fig_b, use_container_width=True)
-                        print(dai)
-                        print("-"*1000)
-                        st.session_state.messages.append({"role": "assistant", "content": rep2})
-                        st.session_state.messages.append({"role": "assistant", "content": st.session_state.dataai})
-                        st.session_state.messages.append({"role": "assistant", "content": rep3})
-                        st.session_state.messages.append({"role": "assistant", "content": st.session_state.fig_b})
-                if st.session_state.tusk == "anml":
-                    rep = "Дякую за Ваш запит, ось резульати проведення тестування на аномалії"
-                    st.write_stream(response_1(rep))
-                    st.session_state.messages.append({"role": "assistant", "content": rep})
-                    if st.session_state.dataai is not None:
-                        rep2 = "Ось табличка з даними після проведення тестування на аномалії"
-                        rep3 = "Та також графік Вашого прогнозу. Синім зображені Ваші дані, зеленим - прогнозовані а червоним крапками місця з аномаліями"
-                        st.write_stream(response_1(rep2))
-                        dai = st.write(st.session_state.dataai)
-                        
-                        st.write_stream(response_1(rep3))
-                        chart = st.plotly_chart(st.session_state.fig_b, use_container_width=True)
-                        print(dai)
-                        print("-"*1000)
-                        st.session_state.messages.append({"role": "assistant", "content": rep2})
-                        st.session_state.messages.append({"role": "assistant", "content": st.session_state.dataai})
-                        st.session_state.messages.append({"role": "assistant", "content": rep3})
-                        st.session_state.messages.append({"role": "assistant", "content": st.session_state.fig_b})
-                if st.session_state.tusk == "nn":
-                    rep = "Вибачте, але здається що Ви не вказали, що конкретно хочете робити"
-                    st.write_stream(response_1(rep))
-                    st.session_state.messages.append({"role": "assistant", "content": rep})
-                if st.session_state.tusk == "no":
-                    rep = "Уточніть, будь ласка, Ваш запит"
-                    st.write_stream(response_1(rep))
-                    st.session_state.messages.append({"role": "assistant", "content": rep})
+                gen = response_generator(ds_for_pred, prompt)
+                response = st.write_stream(gen)
+                st.session_state.messages.append({"role": "assistant", "content": response})
+                if st.session_state.dataai is not None:
+                    dai = st.write(st.session_state.dataai)
+                    chart = st.plotly_chart(st.session_state.fig_b, use_container_width=True)
+                    print(dai)
+                    print("-"*1000)
+                    st.session_state.messages.append({"role": "assistant", "content": st.session_state.dataai})
+                    st.session_state.messages.append({"role": "assistant", "content": st.session_state.fig_b})
 
 
 
