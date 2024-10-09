@@ -75,7 +75,7 @@ def response_generator(datafra, res):
         ],
         model="llama-3.1-70b-versatile"
     )
-
+    respo = chatco.choices[0].message.content
     response = "Уточніть будь ласка запит"
     try:
         mdl = respo.split()[1]
