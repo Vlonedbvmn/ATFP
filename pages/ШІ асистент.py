@@ -67,17 +67,7 @@ def response_generator(datafra, res):
         model="llama-3.1-70b-versatile"
     )
 
-    respo = chatco.choices[0].message.content
-    chatco = client.chat.completions.create(
-        messages=[
-            {
-                "role": "user",
-                "content": f"Попроси вічливо уточнити запит"
-            }
-        ],
-        model="llama-3.1-70b-versatile"
-    )
-    response = chatco.choices[0].message.content
+    response = "Уточніть будь ласка запит"
     try:
         mdl = respo.split()[1]
         hrz = respo.split()[3]
