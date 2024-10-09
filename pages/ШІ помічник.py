@@ -1447,6 +1447,7 @@ if __name__ == "__main__":
             st.session_state.date_not_n = True
             ds_for_pred['ds'] = [i for i in range(1, len(ds_for_pred) + 1)]
         st.title("ШІ помічник")
+        st.markdown(f"## Зараз працюю з обраним Вами набором даних: {st.session_state.name}")
         st.write(" ")
         st.markdown("## Приклади запитів до ШІ помічника:")
         for message in st.session_state.messages1:
@@ -1468,8 +1469,6 @@ if __name__ == "__main__":
                 #     st.plotly_chart(message["content"])
                 # else:
                 st.write(message["content"])
-        with st.chat_message("assistant"):
-            st.write_stream(response_1(f"Зараз працюю з обраним Вами набором даних: {st.session_state.name}"))
         # Accept user input
         if prompt := st.chat_input("Напишіть свій запит і отримайте відповідь"):
             # Add user message to chat history
