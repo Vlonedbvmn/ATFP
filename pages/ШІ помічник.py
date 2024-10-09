@@ -44,7 +44,9 @@ if "dataai" not in st.session_state:
 
 def response_1():
     response = "Перед тим як працювати зі мною, оберіть дані з якими Ви будете працювати у розділі 'Дані'"
-
+    for word in response.split():
+                yield word + " "
+                time.sleep(0.1)
 
 # Streamed response emulator
 def response_generator(datafra, res):
@@ -1514,6 +1516,19 @@ if __name__ == "__main__":
 
     else:
         st.session_state.no_d = True
-         
+        st.title("ШІ помічник")
+        st.write(" ")
+        st.markdown("## Приклади запитів до ШІ помічника:")
+        for message in st.session_state.messages1:
+            with st.chat_message(message["role"]):
+                # if isinstance(message["content"],str):
+                #     st.markdown(message["content"])
+                # elif isinstance(message["content"],st.delta_generator.DeltaGenerator):
+                #     st.plotly_chart(message["content"])
+                # else:
+                st.write(message["content"])
+        st.write(" ")
+        st.markdown("## Чат")
         with st.chat_message("assistant"):
-            st.write("Перед тим як працювати зі мною, оберіть дані з якими Ви будете працювати у розділі 'Дані'")
+            # st.write("Перед тим як працювати зі мною, оберіть дані з якими Ви будете працювати у розділі 'Дані'")
+            st.write_stream(response_1())
