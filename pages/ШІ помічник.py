@@ -42,8 +42,8 @@ if "fig_b" not in st.session_state:
 if "dataai" not in st.session_state:
     st.session_state.dataai = None
 
-def response_1():
-    response = "Перед тим як працювати зі мною, оберіть дані з якими Ви будете працювати у розділі 'Дані'"
+def response_1(chr):
+    response = chr
     for word in response.split():
                 yield word + " "
                 time.sleep(0.1)
@@ -1530,5 +1530,4 @@ if __name__ == "__main__":
         st.write(" ")
         st.markdown("## Чат")
         with st.chat_message("assistant"):
-            # st.write("Перед тим як працювати зі мною, оберіть дані з якими Ви будете працювати у розділі 'Дані'")
             st.write_stream(response_1("Перед тим як працювати зі мною, оберіть дані з якими Ви будете працювати у розділі 'Дані'"))
