@@ -1506,15 +1506,15 @@ if __name__ == "__main__":
                 response_generator(ds_for_pred, prompt)
                 if st.session_state.tusk == "fcst":
                     rep = "Дякую за Ваш запит, ось резульати прогнозування"
-                    st.write_stream(response1(rep))
+                    st.write_stream(response_1(rep))
                     st.session_state.messages.append({"role": "assistant", "content": rep})
                     if st.session_state.dataai is not None:
                         rep2 = "Ось табличка з данми Вашого прогнозу"
                         rep3 = "Та також графік Вашого прогнозу. Синім зображені дані до, а червоним зображено сам прогноз"
-                        st.write_stream(response1(rep2))
+                        st.write_stream(response_1(rep2))
                         dai = st.write(st.session_state.dataai)
                         
-                        st.write_stream(response1(rep3))
+                        st.write_stream(response_1(rep3))
                         chart = st.plotly_chart(st.session_state.fig_b, use_container_width=True)
                         print(dai)
                         print("-"*1000)
@@ -1524,15 +1524,15 @@ if __name__ == "__main__":
                         st.session_state.messages.append({"role": "assistant", "content": st.session_state.fig_b})
                 if st.session_state.tusk == "anml":
                     rep = "Дякую за Ваш запит, ось резульати проведення тестування на аномалії"
-                    st.write_stream(response1(rep))
+                    st.write_stream(response_1(rep))
                     st.session_state.messages.append({"role": "assistant", "content": rep})
                     if st.session_state.dataai is not None:
                         rep2 = "Ось табличка з даними після проведення тестування на аномалії"
                         rep3 = "Та також графік Вашого прогнозу. Синім зображені Ваші дані, зеленим - прогнозовані а червоним крапками місця з аномаліями"
-                        st.write_stream(response1(rep2))
+                        st.write_stream(response_1(rep2))
                         dai = st.write(st.session_state.dataai)
                         
-                        st.write_stream(response1(rep3))
+                        st.write_stream(response_1(rep3))
                         chart = st.plotly_chart(st.session_state.fig_b, use_container_width=True)
                         print(dai)
                         print("-"*1000)
@@ -1542,11 +1542,11 @@ if __name__ == "__main__":
                         st.session_state.messages.append({"role": "assistant", "content": st.session_state.fig_b})
                 if st.session_state.tusk == "nn":
                     rep = "Вибачте, але здається що Ви не вказали, що конкретно хочете робити"
-                    st.write_stream(response1(rep))
+                    st.write_stream(response_1(rep))
                     st.session_state.messages.append({"role": "assistant", "content": rep})
                 if st.session_state.tusk == "no":
                     rep = "Уточніть, будь ласка, Ваш запит"
-                    st.write_stream(response1(rep))
+                    st.write_stream(response_1(rep))
                     st.session_state.messages.append({"role": "assistant", "content": rep})
 
 
