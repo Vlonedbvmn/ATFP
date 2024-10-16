@@ -1,4 +1,4 @@
-import streamlit as st
+erimport streamlit as st
 import pandas as pd
 from neuralforecast.models import KAN, TimeLLM, TimesNet, NBEATSx, TimeMixer, PatchTST
 from neuralforecast import NeuralForecast
@@ -72,7 +72,7 @@ def anomal(datafra, freqs):
     #     models=[
     #         NBEATSx(h=len(datafra),
     #                 input_size=14*q,
-    #                 # output_size=horizon,
+    #                 #tput_size=horizon,
     #                 max_steps=20,
     #                 scaler_type='standard',
     #                 start_padding_enabled=True
