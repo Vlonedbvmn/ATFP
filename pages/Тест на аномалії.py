@@ -210,11 +210,11 @@ if __name__ == "__main__":
             # Highlight anomalies
             
             anomalie_count = 0
-            for i in datafra[:sl]['anomaly'].tolist():
+            for i in datafra[:sl]['anomaly'].values.tolist():
                 if i:
                     anomalie_count += 1
+            print(anomalie_count)
             anomalies = datafra[:sl][datafra['anomaly'] == True]
-            print("anomalies")
             fig.add_trace(go.Scatter(x=anomalies['ds'], y=anomalies['y'], mode='markers', name='Аномалія',
                                      marker=dict(color='red', size=8)))
         
