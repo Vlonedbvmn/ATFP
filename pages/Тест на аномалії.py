@@ -183,8 +183,8 @@ if __name__ == "__main__":
             fig.add_trace(go.Scatter(x=datafra[:sl]['ds'], y=datafra[:sl]['preds'], mode='lines', name='Прогнозовано', line=dict(color='green')))
         
             # Highlight anomalies
-            anomalies = datafra[datafra['anomaly'] == True]
-            fig.add_trace(go.Scatter(x=anomalies[:sl]['ds'], y=anomalies[:sl]['y'], mode='markers', name='Аномалія',
+            anomalies = datafra[:sl][datafra['anomaly'] == True]
+            fig.add_trace(go.Scatter(x=anomalies['ds'], y=anomalies['y'], mode='markers', name='Аномалія',
                                      marker=dict(color='red', size=8)))
         
             # Add title and labels
