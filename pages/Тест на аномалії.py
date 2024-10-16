@@ -199,36 +199,6 @@ if __name__ == "__main__":
             # Show the plot
             st.session_state.fig_a = fig
             st.plotly_chart(st.session_state.fig_a, use_container_width=True)
-            fig = go.Figure()
-
-            # Add actual values
-            fig.add_trace(go.Scatter(x=datafra[:sl]['ds'], y=datafra[:sl]['y'], mode='lines', name='Дані', line=dict(color='blue')))
-        
-            # Add predicted values
-            fig.add_trace(go.Scatter(x=datafra[:sl]['ds'], y=datafra[:sl]['preds'], mode='lines', name='Прогнозовано', line=dict(color='green')))
-        
-            # Highlight anomalies
-            
-            # anomalie_count = 0
-            # for i in datafra[:sl]['anomaly'].values.tolist():
-            #     if i:
-            #         anomalie_count += 1
-            # print(anomalie_count)
-            anomalies = datafra[:sl][datafra['anomaly'] == True]
-            fig.add_trace(go.Scatter(x=anomalies['ds'], y=anomalies['y'], mode='markers', name='Аномалія',
-                                     marker=dict(color='red', size=8)))
-        
-            # Add title and labels
-            fig.update_layout(
-                title='Графік аномалій',
-                xaxis_title='Дата',
-                yaxis_title='Значення',
-                template='plotly_white'
-            )
-        
-            # Show the plot
-            st.session_state.fig_a = fig
-            st.plotly_chart(st.session_state.fig_a, use_container_width=True)
             # st.metric(label="К-ть аномалій", value=anomalie_count)
 
     else:
