@@ -19,8 +19,8 @@ if 'target' not in st.session_state:
     st.session_state.target = None
 if 'name' not in st.session_state:
     st.session_state.name = None
-if 'frq' not in st.session_state:
-    st.session_state.frq = None
+if 'freq' not in st.session_state:
+    st.session_state.freq = None
 
 
 
@@ -119,7 +119,7 @@ def submit_data(dataframe, date_col, target_col, name, fr):
     st.session_state.date = date_col
     st.session_state.target = target_col
     st.session_state.name = name
-    st.session_state.freq = fr
+    st.session_state.freq = means[fr]
     st.session_state.submitted = True
 
 
