@@ -173,7 +173,7 @@ if __name__ == "__main__":
             st.divider()
             sl = st.select_slider(
                     "Оберіть горизонт даних:",
-                    options=[i for i in range(len(datafra))]
+                    options=[i for i in range(len(datafra)+1)]
                 )
             fig = go.Figure()
 
@@ -208,6 +208,11 @@ if __name__ == "__main__":
             fig.add_trace(go.Scatter(x=datafra[:sl]['ds'], y=datafra[:sl]['preds'], mode='lines', name='Прогнозовано', line=dict(color='green')))
         
             # Highlight anomalies
+            
+            anomalie_count = 0
+            for i in datafra[:sl]['anomaly'].tolist():
+                if i:
+                    anomalie_count += 1
             anomalies = datafra[:sl][datafra['anomaly'] == True]
             print("anomalies")
             print(anoamlies)
@@ -225,6 +230,7 @@ if __name__ == "__main__":
             # Show the plot
             st.session_state.fig_a = fig
             st.plotly_chart(st.session_state.fig_a, use_container_width=True)
+            st.metric(label="К-ть аномалій", value=anomalie_count)
 
     else:
         st.warning('Для проведення тесту на аномалії, оберіть дані', icon="⚠️")
