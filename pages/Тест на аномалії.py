@@ -215,7 +215,6 @@ if __name__ == "__main__":
                     anomalie_count += 1
             anomalies = datafra[:sl][datafra['anomaly'] == True]
             print("anomalies")
-            print(anoamlies)
             fig.add_trace(go.Scatter(x=anomalies['ds'], y=anomalies['y'], mode='markers', name='Аномалія',
                                      marker=dict(color='red', size=8)))
         
