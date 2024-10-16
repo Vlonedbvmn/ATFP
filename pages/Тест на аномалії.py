@@ -1,4 +1,4 @@
-erimport streamlit as st
+import streamlit as st
 import pandas as pd
 from neuralforecast.models import KAN, TimeLLM, TimesNet, NBEATSx, TimeMixer, PatchTST
 from neuralforecast import NeuralForecast
