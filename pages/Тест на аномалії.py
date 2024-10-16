@@ -168,7 +168,7 @@ if __name__ == "__main__":
         #                   ["Місяць", "День", "Рік", "Хвилина", "Секунда", "Година"])
 
         st.button(label="Підтвердити", key="kan", on_click=anomal,
-                  args=(ds_for_pred, st.session_state.frq))
+                  args=(ds_for_pred, st.session_state.freq))
 
         st.divider()
 
@@ -193,12 +193,5 @@ if __name__ == "__main__":
                 )
             st.plotly_chart(st.session_state.fig_a, use_container_width=True)
 
-        # st.button("Train", type="primary", on_click=save_performance, args=((model, k)))
-        #
-        # with st.expander("See full dataset"):
-        #     st.write(wine_df)
-        #
-        # if len(st.session_state['score']) != 0:
-        #     st.subheader(f"The model has an F1-Score of: {st.session_state['score'][-1]}")
     else:
         st.warning('Для проведення тесту на аномалії, оберіть дані', icon="⚠️")
