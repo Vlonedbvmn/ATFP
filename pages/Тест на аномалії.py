@@ -229,7 +229,7 @@ if __name__ == "__main__":
             # Show the plot
             st.session_state.fig_a = fig
             st.plotly_chart(st.session_state.fig_a, use_container_width=True)
-            st.metric(label="К-ть аномалій", value=anomalie_count)
+            # st.metric(label="К-ть аномалій", value=anomalie_count)
 
     else:
         st.warning('Для проведення тесту на аномалії, оберіть дані', icon="⚠️")
