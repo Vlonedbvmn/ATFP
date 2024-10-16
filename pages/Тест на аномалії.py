@@ -201,7 +201,8 @@ if __name__ == "__main__":
             st.plotly_chart(st.session_state.fig_a, use_container_width=True)
             anomalie_count = 0
             for i in datafra[:sl]['anomaly'].values.tolist():
-                anomalie_count += 1
+                if i:
+                    anomalie_count += 1
             st.metric(label="К-ть аномалій", value=anomalie_count)
 
     else:
