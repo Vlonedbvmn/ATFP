@@ -170,9 +170,10 @@ if __name__ == "__main__":
                     file_name="anomaly.xlsx",
                     mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
                 )
+            st.divider()
             sl = st.select_slider(
-                    "Оберіть к-ть ітерацій начання моделі (чим більше, тим довше та точніше):",
-                    options=[i for i in range(len(datafra)-1)]
+                    "Оберіть горизонт даних:",
+                    options=[i for i in range(len(datafra))]
                 )
             fig = go.Figure()
 
@@ -184,6 +185,32 @@ if __name__ == "__main__":
         
             # Highlight anomalies
             anomalies = datafra[:sl][datafra['anomaly'] == True]
+            fig.add_trace(go.Scatter(x=anomalies['ds'], y=anomalies['y'], mode='markers', name='Аномалія',
+                                     marker=dict(color='red', size=8)))
+        
+            # Add title and labels
+            fig.update_layout(
+                title='Графік аномалій',
+                xaxis_title='Дата',
+                yaxis_title='Значення',
+                template='plotly_white'
+            )
+        
+            # Show the plot
+            st.session_state.fig_a = fig
+            st.plotly_chart(st.session_state.fig_a, use_container_width=True)
+            fig = go.Figure()
+
+            # Add actual values
+            fig.add_trace(go.Scatter(x=datafra[:sl]['ds'], y=datafra[:sl]['y'], mode='lines', name='Дані', line=dict(color='blue')))
+        
+            # Add predicted values
+            fig.add_trace(go.Scatter(x=datafra[:sl]['ds'], y=datafra[:sl]['preds'], mode='lines', name='Прогнозовано', line=dict(color='green')))
+        
+            # Highlight anomalies
+            anomalies = datafra[:sl][datafra['anomaly'] == True]
+            print("anomalies")
+            print(anoamlies)
             fig.add_trace(go.Scatter(x=anomalies['ds'], y=anomalies['y'], mode='markers', name='Аномалія',
                                      marker=dict(color='red', size=8)))
         
