@@ -27,6 +27,8 @@ if 'fig' not in st.session_state:
     st.session_state.fig = None
 if 'fig_a' not in st.session_state:
     st.session_state.fig_a = None
+if 'fig_c' not in st.session_state:
+    st.session_state.fig_c = None
 if 'mse' not in st.session_state:
     st.session_state.mse = None
 if 'inst_name' not in st.session_state:
@@ -108,30 +110,6 @@ def anomal(datafra, freqs):
     datafra['anomaly'] = datafra['residuals'] > threshold
 
     # Plot actual, predicted values, and anomalies using plotly
-    fig = go.Figure()
-
-    # Add actual values
-    fig.add_trace(go.Scatter(x=datafra['ds'], y=datafra['y'], mode='lines', name='Дані', line=dict(color='blue')))
-
-    # Add predicted values
-    fig.add_trace(go.Scatter(x=datafra['ds'], y=datafra['NBEATSx'], mode='lines', name='Прогнозовано', line=dict(color='green')))
-
-    # Highlight anomalies
-    anomalies = datafra[datafra['anomaly'] == True]
-    fig.add_trace(go.Scatter(x=anomalies['ds'], y=anomalies['y'], mode='markers', name='Аномалія',
-                             marker=dict(color='red', size=8)))
-
-    # Add title and labels
-    fig.update_layout(
-        title='Графік аномалій',
-        xaxis_title='Дата',
-        yaxis_title='Значення',
-        template='plotly_white'
-    )
-
-    datafra = datafra.rename(columns={"NBEATSx": "preds"})
-    # Show the plot
-    st.session_state.fig_a = fig
     st.session_state.datanom = datafra.drop(['unique_id', 'residuals'], axis=1)
 
 
@@ -172,8 +150,9 @@ if __name__ == "__main__":
 
         st.divider()
 
-        if st.session_state.fig_a is not None:
+        if st.session_state.datanom is not None:
             st.markdown("# Результат проведення тестування")
+            datafra = st.session_state.datanom.rename(columns={"NBEATSx": "preds"})
             col3, col4 = st.columns(2)
             with col3:
                 with st.expander("Подивитись тест даних на аномалії:"):
@@ -191,7 +170,34 @@ if __name__ == "__main__":
                     file_name="anomaly.xlsx",
                     mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
                 )
-            st.plotly_chart(st.session_state.fig_a, use_container_width=True)
+            sl = st.select_slider(
+                    "Оберіть к-ть ітерацій начання моделі (чим більше, тим довше та точніше):",
+                    options=[i for i in range(len(datafra)-1)]
+                )
+            fig = go.Figure()
+
+            # Add actual values
+            fig.add_trace(go.Scatter(x=datafra[:sl]['ds'], y=datafra[:sl]['y'], mode='lines', name='Дані', line=dict(color='blue')))
+        
+            # Add predicted values
+            fig.add_trace(go.Scatter(x=datafra[:sl]['ds'], y=datafra[:sl]['preds'], mode='lines', name='Прогнозовано', line=dict(color='green')))
+        
+            # Highlight anomalies
+            anomalies = datafra[datafra['anomaly'] == True]
+            fig.add_trace(go.Scatter(x=anomalies[:sl]['ds'], y=anomalies[:sl]['y'], mode='markers', name='Аномалія',
+                                     marker=dict(color='red', size=8)))
+        
+            # Add title and labels
+            fig.update_layout(
+                title='Графік аномалій',
+                xaxis_title='Дата',
+                yaxis_title='Значення',
+                template='plotly_white'
+            )
+        
+            # Show the plot
+            st.session_state.fig_a = fig
+                    st.plotly_chart(st.session_state.fig_a, use_container_width=True)
 
     else:
         st.warning('Для проведення тесту на аномалії, оберіть дані', icon="⚠️")
