@@ -173,7 +173,7 @@ if __name__ == "__main__":
             st.divider()
             sl = st.select_slider(
                     "Оберіть горизонт даних:",
-                    options=[i for i in range(1, len(datafra)+1)]
+                    options=[i for i in range(1, len(datafra))]
                 )
             fig = go.Figure()
 
